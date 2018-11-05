@@ -1,65 +1,54 @@
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FindingLongestSlotToSleep {
+public class _3_FindingLongestSlot {
 	public static void main(String[] args) {
-		new FindingLongestSlotToSleep();
+		new _3_FindingLongestSlot();
 	}
 	
-	public FindingLongestSlotToSleep() {
+	public _3_FindingLongestSlot() {
 		String data = getData();
 		System.out.println(solution(data));
 		
 	}
 
 	public int solution(String A) {
+		if (A == null || A.isEmpty()) return 7*24*60;
+		
 		String[] dataArr = A.split("\n");
 		Map<Integer, List<String>> dataMapping = gatherData(dataArr);
+		List<Integer> result = findFreeSlot(dataMapping);
+		// Manual Checking
 		System.out.println(dataMapping);
-		Map<Integer, List<Integer>> result = findFreeSlot(dataMapping);
 		System.out.println(result);
-		return findMaxSlotWithCondition(result);
+		return findMaxSlot(result);
 	}
 
-	private int findMaxSlotWithCondition(Map<Integer, List<Integer>> timeSlotMapping) {
+	private int findMaxSlot(List<Integer> timeSlotList) {
 		int max = 0;
-		int lastSlotOfTheDay = 0;
-		for (Integer key : timeSlotMapping.keySet()) {
-			List<Integer> list = timeSlotMapping.get(key);
-			for (int i=0; i<list.size(); i++) {
-				Integer time = list.get(i);
-				if (i == 0) {
-					max = Integer.max(max, time + lastSlotOfTheDay);
-					lastSlotOfTheDay = time;
-					continue;
-				}
-
-				max = Integer.max(max, time);
-				lastSlotOfTheDay = time;
-			}
+		for (Integer key : timeSlotList) {
+			max = Integer.max(max, key);
 		}
-
+		
 		return max;
 	}
 	
-	private Map<Integer, List<Integer>> findFreeSlot(Map<Integer, List<String>> dataMapping) {
-		Calendar startFreeCal = Calendar.getInstance();
-		Calendar endFreeCal = Calendar.getInstance();
+	private List<Integer> findFreeSlot(Map<Integer, List<String>> dataMapping) {
 		int fixYear = 2000;
 		int fixMonth = 1;
 		int fixDate = 1;
-		Map<Integer, List<Integer>> result = new HashMap<Integer, List<Integer>>();
+		Calendar startFreeCal = Calendar.getInstance();
+		Calendar endFreeCal = Calendar.getInstance();
+		startFreeCal.set(fixYear, fixMonth, fixDate, 0, 0);
+		endFreeCal.set(fixYear, fixMonth, fixDate, 0, 0);
+		List<Integer> resultList = new ArrayList<Integer>();
 		for (Integer key : dataMapping.keySet()) {
 			List<String> meetingList = dataMapping.get(key);
-			List<Integer> resultList = new ArrayList<Integer>();
-			startFreeCal.set(fixYear, fixMonth, fixDate, 0, 0);
 			for (String meetingPeriod : meetingList) {
 				String start = meetingPeriod.split("-")[0];
 				int startMin = Integer.parseInt(start.split(":")[0]);
@@ -67,19 +56,14 @@ public class FindingLongestSlotToSleep {
 				String end = meetingPeriod.split("-")[1];
 				int endMin = Integer.parseInt(end.split(":")[0]);
 				int endSec = Integer.parseInt(end.split(":")[1]);
-				endFreeCal.set(fixYear, fixMonth, fixDate, startMin, startSec);
+				endFreeCal.set(fixYear, fixMonth, key, startMin, startSec);
 				int minDiff = (int) ((endFreeCal.getTimeInMillis() - startFreeCal.getTimeInMillis()) / 60000);
 				resultList.add(minDiff);
-				startFreeCal.set(fixYear, fixMonth, fixDate, endMin, endSec);
+				startFreeCal.set(fixYear, fixMonth, key, endMin, endSec);
 			}
-
-			endFreeCal.set(fixYear, fixMonth, fixDate + 1, 0, 0);
-			int minDiff = (int) ((endFreeCal.getTimeInMillis() - startFreeCal.getTimeInMillis()) / 60000);
-			resultList.add(minDiff);
-			result.put(key, resultList);
 		}
-
-		return result;
+		
+		return resultList;
 	}
 	
 	private Map<Integer, List<String>> gatherData(String[] dataArr) {
@@ -89,7 +73,7 @@ public class FindingLongestSlotToSleep {
 			String data = dataArr[i];
 			int delIndex = data.indexOf(del);
 			String dateStr = data.substring(0, delIndex);
-			int key = DateIndex(dateStr);
+			int key = getDateIndex(dateStr);
 			String periodOfTime = data.substring(delIndex + del.length(), data.length());
 			if (!dataMapping.containsKey(key)) {
 				List<String> timeList = new ArrayList<String>();
@@ -111,7 +95,7 @@ public class FindingLongestSlotToSleep {
 		return dataMapping;
 	}
 	
-	private int DateIndex(String date) {
+	private int getDateIndex(String date) {
 		if (date.equals("Mon")) {
 			return 1;
 		}
@@ -152,13 +136,17 @@ public class FindingLongestSlotToSleep {
 //				+ "Mon 05:00-13:00\n"
 //				+ "Mon 15:00-21:00";
 
-		String value = "Mon 01:00-22:00\n"
-				+ "Tue 01:00-22:00\n"
-				+ "Wed 01:00-22:00\n"
-				+ "Thu 01:00-22:00\n"
-				+ "Fri 01:00-22:00\n"
-				+ "Sat 01:00-21:59\n"
-				+ "Sun 01:00-22:00\n";
+//		String value = "Mon 01:00-22:00\n"
+//				+ "Tue 01:00-22:00\n"
+//				+ "Wed 01:00-22:00\n"
+//				+ "Thu 01:00-22:00\n"
+//				+ "Fri 01:00-22:00\n"
+//				+ "Sat 01:00-21:59\n"
+//				+ "Sun 01:00-22:00\n";
+//		String value = "Mon 00:00-01:00\n"
+//				+ "Tue 00:00-01:00\n"
+//				+ "Sun 23:00-23:59";
+		String value = "Mon 00:00-01:00\nTue 00:00-00:01\nThu 00:00-00:01\nSun 23:00-23:59";
 
 		return value;
 	}

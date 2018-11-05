@@ -1,12 +1,12 @@
 /**
  * Created by champ on 4/11/2018 AD.
  */
-public class SmallFrog {
+public class _EX_SmallFrog {
     public static void main(String[] args) {
-        new SmallFrog();
+        new _EX_SmallFrog();
     }
 
-    public SmallFrog() {
+    public _EX_SmallFrog() {
         System.out.println(solution(10, 85, 30));
     }
 

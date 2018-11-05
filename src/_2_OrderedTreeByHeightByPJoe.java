@@ -1,5 +1,5 @@
 
-public class OrderedTreeByHeightByPJoe {
+public class _2_OrderedTreeByHeightByPJoe {
 	public static void main(String[] S) {
 		// int[] A = {3,4,5,4};
 		// int[] A = {4,5,2,3,4};
@@ -8,7 +8,8 @@ public class OrderedTreeByHeightByPJoe {
 		// int[] A = {4,5,2,3,4};
 		// int[] A = {1,2,3,3,5,6,7};
 		// int[] A = {1,3,8,5,6,7};
-		int[] A = { 2,5,7,7,5 };
+//		int[] A = { 2,5,7,7,5 };
+		int[] A = {2};
 
 		int c = 0;
 		if (A == null) {

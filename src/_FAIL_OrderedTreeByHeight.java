@@ -1,11 +1,11 @@
 
 
-public class FAILOrderedTreeByHeight {
+public class _FAIL_OrderedTreeByHeight {
 	public static void main(String[] args) {
-		new FAILOrderedTreeByHeight();
+		new _FAIL_OrderedTreeByHeight();
 	}
 	
-	public FAILOrderedTreeByHeight() {
+	public _FAIL_OrderedTreeByHeight() {
 //		int[] A = {3,4,5,4};
 //		int[] A = {4,5,2,3,4};
 //		int[] A = {1,2,3,3,5,6,7};
